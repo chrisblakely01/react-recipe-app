@@ -26,16 +26,16 @@ function SimpleMediaCard(props) {
       <Card className={classes.card}>
         <CardMedia
           className={classes.media}
-          image="https://www.edamam.com/web-img/365/365b54e459f4081496694f9c43a99d5b"
+          image={props.data.image}
         />
         <CardContent>
           <Typography gutterBottom variant="headline" component="h2">
-            {props.number} Lorem Ipsum
+            {props.data.label}
           </Typography>
           <Typography component="p">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam id
-            pellentesque libero, vitae finibus ligula. Donec dignissim, nulla
-            vitae imperdiet accumsan, enim quam hendrerit diam, eget blandit eros metus id libero.
+            {props.data.ingredientLines.map(function(ingredientLine, index){
+                return <p key={index}>{ingredientLine}</p>;
+            })}
           </Typography>
         </CardContent>
         <CardActions>

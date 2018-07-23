@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import RecipeCard from './RecipeCard';
-import tileData from './tileData.js';
 
 const styles = theme => ({
   root: {
@@ -23,10 +22,10 @@ class RecipeGrid extends React.Component {
     const { classes } = this.props;
 
     return (
-      <Grid container className={classes.demo} justify="center" spacing="16">
-        {tileData.map(value => (
-          <Grid key={value} item>
-            <RecipeCard className={classes.paper} />
+      <Grid container className={classes.demo} justify="center" spacing={16}>
+        {this.props.data.map(({recipe, index}) => (
+          <Grid key={index} item>
+            <RecipeCard key={index} className={classes.paper} data={recipe}/>
           </Grid>
         ))}
       </Grid>
