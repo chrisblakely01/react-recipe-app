@@ -1,58 +1,103 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import red from '@material-ui/core/colors/red';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-const styles = {
+const styles = theme => ({
   card: {
-    maxWidth: 345,
+    minWidth: 400,
+    maxWidth: 400
+  },
+  cardHeader: {
+    minHeight: 50,
+    maxHeight: 50
   },
   media: {
     height: 0,
     paddingTop: '56.25%', // 16:9
   },
-};
+  actions: {
+    display: 'flex',
+  },
+  expand: {
+    transform: 'rotate(0deg)',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+    }),
+    marginLeft: 'auto',
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)',
+  },
+  avatar: {
+    backgroundColor: red[500],
+  },
+});
 
-function SimpleMediaCard(props) {
-  console.log(props);
-  const { classes } = props;
-  return (
-    <div>
-      <Card className={classes.card}>
-        <CardMedia
-          className={classes.media}
-          image={props.data.image}
-        />
-        <CardContent>
-          <Typography gutterBottom variant="headline" component="h2">
-            {props.data.label}
-          </Typography>
-          <Typography component="p">
-            {props.data.ingredientLines.map(function(ingredientLine, index){
-                return <p key={index}>{ingredientLine}</p>;
-            })}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small" color="primary">
-            Share
-          </Button>
-          <Button size="small" color="primary">
-            Learn More
-          </Button>
-        </CardActions>
-      </Card>
-    </div>
-  );
+class RecipeReviewCard extends React.Component {
+  state = { expanded: false };
+
+  handleExpandClick = () => {
+    this.setState(state => ({ expanded: !state.expanded }));
+  };
+
+  render() {
+    const { classes } = this.props;
+
+    return (
+      <div>
+        <Card className={classes.card}>
+
+          <CardMedia
+            className={classes.media}
+            image={this.props.data.image}
+            title={this.props.data.label}
+          />
+          <CardContent>
+            <CardHeader
+              className={classes.cardHeader}
+              title={this.props.data.label}
+            />
+          </CardContent>
+          <CardActions className={classes.actions} disableActionSpacing>
+            <IconButton
+              className={classnames(classes.expand, {
+                [classes.expandOpen]: this.state.expanded,
+              })}
+              onClick={this.handleExpandClick}
+              aria-expanded={this.state.expanded}
+              aria-label="Show more">
+              <ExpandMoreIcon />
+            </IconButton>
+          </CardActions>
+          <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <Typography paragraph variant="body2">
+                Method:
+              </Typography>
+              {this.props.data.ingredientLines.map(function(ingredientLine, index){
+                  return <Typography paragraph key={index}>{ingredientLine}</Typography>;
+              })}
+            </CardContent>
+          </Collapse>
+        </Card>
+      </div>
+    );
+  }
 }
 
-SimpleMediaCard.propTypes = {
+RecipeReviewCard.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SimpleMediaCard);
+export default withStyles(styles)(RecipeReviewCard);

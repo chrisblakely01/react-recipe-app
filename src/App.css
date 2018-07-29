@@ -23,6 +23,13 @@
   font-size: large;
 }
 
+.card-list-image {
+  height: auto;
+  max-height: 250px;
+  width: auto;
+  max-width: 250px;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
